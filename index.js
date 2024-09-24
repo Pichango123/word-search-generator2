@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from 'https://cdn.skypack.dev/react';
-import ReactDOM from 'https://cdn.skypack.dev/react-dom';
-
 const WordSearchGenerator = () => {
-  const [options, setOptions] = useState({
+  const [options, setOptions] = React.useState({
     width: 10,
     height: 10,
     font: 'Arial',
@@ -10,12 +7,12 @@ const WordSearchGenerator = () => {
     textColor: '#000000',
     level: ['horizontal', 'vertical']
   });
-  const [wordsInput, setWordsInput] = useState('');
-  const [wordSearch, setWordSearch] = useState([]);
-  const [wordPositions, setWordPositions] = useState([]);
-  const [showAnswers, setShowAnswers] = useState(false);
+  const [wordsInput, setWordsInput] = React.useState('');
+  const [wordSearch, setWordSearch] = React.useState([]);
+  const [wordPositions, setWordPositions] = React.useState([]);
+  const [showAnswers, setShowAnswers] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const words = wordsInput.split('\n').filter(word => word.trim() !== '');
     if (words.length > 0) {
       const { grid, positions } = generateWordSearch(words, options);
@@ -181,73 +178,4 @@ const WordSearchGenerator = () => {
               className="w-full p-2 border rounded"
             >
               <option value="horizontal,vertical">Horizontal & Vertical</option>
-              <option value="horizontal,vertical,diagonal">Horizontal, Vertical & Diagonal</option>
-              <option value="horizontal,vertical,diagonal,reverse">All Directions</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div className="w-full md:w-2/3 space-y-4">
-        <div>
-          <h2 className="text-xl font-bold mb-2">Words to Find</h2>
-          <textarea
-            placeholder="Enter words, one per line"
-            value={wordsInput}
-            onChange={(e) => setWordsInput(e.target.value)}
-            rows="5"
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        <div>
-          <h2 className="text-xl font-bold mb-2">Word Search</h2>
-          <div
-            style={{
-              fontFamily: options.font,
-              backgroundColor: options.backgroundColor,
-              color: options.textColor,
-              display: 'grid',
-              gridTemplateColumns: `repeat(${options.width}, 1fr)`,
-              gap: '4px',
-              justifyItems: 'center',
-              alignItems: 'center',
-              position: 'relative',
-            }}
-          >
-            {wordSearch.map((row, y) =>
-              row.map((char, x) => (
-                <div key={`${x}-${y}`} style={{ width: '20px', height: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  {char}
-                </div>
-              ))
-            )}
-            {showAnswers && (
-              <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
-                {wordPositions.map(({ start, end }, index) => (
-                  <line
-                    key={index}
-                    x1={`${(start[0] + 0.5) * (100 / options.width)}%`}
-                    y1={`${(start[1] + 0.5) * (100 / options.height)}%`}
-                    x2={`${(end[0] + 0.5) * (100 / options.width)}%`}
-                    y2={`${(end[1] + 0.5) * (100 / options.height)}%`}
-                    stroke="red"
-                    strokeWidth="2"
-                  />
-                ))}
-              </svg>
-            )}
-          </div>
-          <div className="mt-4 space-x-2">
-            <button onClick={copyToClipboard} className="bg-blue-500 text-white px-4 py-2 rounded">Copy to Clipboard</button>
-            <button onClick={() => exportSVG(false)} className="bg-green-500 text-white px-4 py-2 rounded">Export as SVG</button>
-            <button onClick={() => setShowAnswers(!showAnswers)} className="bg-yellow-500 text-white px-4 py-2 rounded">
-              {showAnswers ? 'Hide Answers' : 'Show Answers'}
-            </button>
-            <button onClick={() => exportSVG(true)} className="bg-red-500 text-white px-4 py-2 rounded">Export SVG with Answers</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-ReactDOM.render(<WordSearchGenerator />, document.getElementById('root'));
+              
